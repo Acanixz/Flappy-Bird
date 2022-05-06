@@ -22,90 +22,104 @@ using namespace std;
 
 int main()
 {
-    ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, A SEGUIR.
-    //INICIO: COMANDOS PARA QUE O CURSOR NÃO FIQUE PISCANDO NA TELA
-    HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_CURSOR_INFO     cursorInfo;
-    GetConsoleCursorInfo(out, &cursorInfo);
-    cursorInfo.bVisible = false; // set the cursor visibility
-    SetConsoleCursorInfo(out, &cursorInfo);
-    //FIM: COMANDOS PARA QUE O CURSOR NÃO FIQUE PISCANDO NA TELA
-    //INÍCIO: COMANDOS PARA REPOSICIONAR O CURSOR NO INÍCIO DA TELA
-    ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, ACIMA.
-    COORD coord;
-    //FIM: COMANDOS PARA REPOSICIONAR O CURSOR NO INÍCIO DA TELA
-    ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, ACIMA.
+    int retryGame = 0;
+    while (retryGame == 0 || retryGame == 1){
+        ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, A SEGUIR.
+        //INICIO: COMANDOS PARA QUE O CURSOR NÃO FIQUE PISCANDO NA TELA
+        HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+        CONSOLE_CURSOR_INFO     cursorInfo;
+        GetConsoleCursorInfo(out, &cursorInfo);
+        cursorInfo.bVisible = false; // set the cursor visibility
+        SetConsoleCursorInfo(out, &cursorInfo);
+        //FIM: COMANDOS PARA QUE O CURSOR NÃO FIQUE PISCANDO NA TELA
+        //INÍCIO: COMANDOS PARA REPOSICIONAR O CURSOR NO INÍCIO DA TELA
+        ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, ACIMA.
+        COORD coord;
+        //FIM: COMANDOS PARA REPOSICIONAR O CURSOR NO INÍCIO DA TELA
+        ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, ACIMA.
 
-    /// VARIAVEIS DEBUG ABAIXO, REMOVER EM VERSÃO FINAL ///
-    int debugVar = -1;
-    /// FIM DAS VARIAVEIS DEBUG ///
-    int score = 0;
-    bool isDead = false;
-    int bird_x=5, bird_y=10; // [Acanixz] Posição Y começa de cima e vai para baixo
-    int obstaculo_x=100, obstaculo_y; // [Acanixz] Originalmente o obstaculo_x era 129
-    int tecla;
+        /// VARIAVEIS DEBUG ABAIXO, REMOVER EM VERSÃO FINAL ///
+        int debugVar = -1;
+        /// FIM DAS VARIAVEIS DEBUG ///
+        int score = 0;
+        bool isDead = false;
+        int bird_x=5, bird_y=10; // [Acanixz] Posição Y começa de cima e vai para baixo
+        int obstaculo_x=100, obstaculo_y; // [Acanixz] Originalmente o obstaculo_x era 129
+        int tecla;
 
 
 
 
 
-    while (true) { //esse laço faz o jogo rodar para sempre
-        system("cls"); // [Acanixz] Tela é limpa a cada frame novo, até o momento, ninguém morreu de epilepsia assim
-        debugVar = bird_y;
-        ///DESENHO DO CENÁRIO // [Acanixz] Originalmente tinha mais hifens, porém não era compativel com a resolução
-        cout<<"----------------------------------------------------------------------------------------------------------------------";
-        cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-        cout<<"---------------------- DEBUG: " << debugVar << " --------- SCORE: " << score << " --------------------------------------------------------------------";
+        while (true) { //esse laço faz o jogo rodar para sempre
+            system("cls"); // [Acanixz] Tela é limpa a cada frame novo, até o momento, ninguém morreu de epilepsia assim
+            debugVar = isDead;
+            ///DESENHO DO CENÁRIO // [Acanixz] Originalmente tinha mais hifens, porém não era compativel com a resolução
+            cout<<"-------------------------------------------------------------------------------------------------------------------";
+            cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+            cout<<"---------------------- DEBUG: " << debugVar << " --------- SCORE: " << score << " -----------------------------------------------------------------";
 
-        ///POSICIONA O PÁSSARO
-        coord.X = bird_x;    coord.Y = bird_y;
-        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-        cout<<char(190);
-
-        ///POSICIONA O OBSTÁCULO
-
-        obstaculo_y=1;
-        while(obstaculo_y<20){
-            coord.X = obstaculo_x;    coord.Y = obstaculo_y;
+            ///POSICIONA O PÁSSARO
+            coord.X = bird_x;    coord.Y = bird_y;
             SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-            if(obstaculo_y<5 || obstaculo_y>7){
-                cout<<char(219);
-            } else {
-                cout<<" ";
+            cout<<char(190);
+
+            ///POSICIONA O OBSTÁCULO
+
+            obstaculo_y=1;
+            while(obstaculo_y<20){
+                coord.X = obstaculo_x;    coord.Y = obstaculo_y;
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+                if(obstaculo_y<5 || obstaculo_y>7){
+                    cout<<char(219);
+                } else {
+                    cout<<" ";
+                }
+
+                obstaculo_y++;
             }
 
-            obstaculo_y++;
+            ///VERIFICA COMANDO DO JOGADOR
+            if (kbhit()) { ///verifica se uma tecla foi pressionada
+                tecla=getch(); //verifica comando do jogador
+            }
+
+            if ( tecla=='w' || tecla=='W' ){
+                bird_y--;
+                tecla='0';
+            } else {
+                bird_y++;
+            }
+
+            ///PÁSSARO CAI 1 POSIÇÃO SE NÃO FOI PRESSIONADO PARA SUBIR
+
+            ///OBSTÁCULO AVANÇA UMA POSIÇÃO PARA ESQUERDA
+            obstaculo_x--;
+
+            ///VERIFICA COLISÃO
+
+            if (bird_y >= 20 || bird_y <= 0){
+                isDead = true;
+            }
+
+            if (isDead == true){
+                break;
+            }
+            ///TEMPO DE ESPERA
+            Sleep(300);
+
+
         }
-
-
-        ///VERIFICA COLISÃO
-
-        ///VERIFICA COMANDO DO JOGADOR
-        if (kbhit()) { ///verifica se uma tecla foi pressionada
-            tecla=getch(); //verifica comando do jogador
-        }
-
-        if ( tecla=='w' || tecla=='W' ){
-            bird_y--;
-            tecla='0';
-        } else {
-            bird_y++;
-        }
-
-        ///PÁSSARO CAI 1 POSIÇÃO SE NÃO FOI PRESSIONADO PARA SUBIR
-
-        ///OBSTÁCULO AVANÇA UMA POSIÇÃO PARA ESQUERDA
-        obstaculo_x--;
-
-        ///TEMPO DE ESPERA
-        Sleep(300);
-
+        do {
+            system("cls");
+            cout<<"-------------------------------------------------------------------------------------------------------------------";
+            cout<<"\n\n\n\n\n\n\n\n\n\t\t\t\t\t\tGAME OVER!";
+            Sleep(1500);
+            cout<<"\n\n\n\n\n\n\n\n\n\t\t\t\t\t\tTry Again?\n\t\t\t\t\t    1 - Yes\t2 - No\n";
+            cout<<"-------------------------------------------------------------------------------------------------------------------\n\n\t\t\t\t\t\t     ";
+            cin >> retryGame;
+        } while (retryGame != 1 && retryGame != 2);
 
     }
-
-
-
-
-
     return 0;
 }
