@@ -36,22 +36,27 @@ int main()
     //FIM: COMANDOS PARA REPOSICIONAR O CURSOR NO INÍCIO DA TELA
     ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, ACIMA.
 
-
-    int bird_x=5, bird_y=10; // Acanixz: Posição Y começa de cima e vai para baixo
-    int obstaculo_x=100, obstaculo_y; // Acanixz: Originalmente o obstaculo_x era 129
+    /// VARIAVEIS DEBUG ABAIXO, REMOVER EM VERSÃO FINAL ///
+    int debugVar = -1;
+    /// FIM DAS VARIAVEIS DEBUG ///
+    int score = 0;
+    bool isDead = false;
+    int bird_x=5, bird_y=10; // [Acanixz] Posição Y começa de cima e vai para baixo
+    int obstaculo_x=100, obstaculo_y; // [Acanixz] Originalmente o obstaculo_x era 129
     int tecla;
-
-    ///DESENHO DO CENÁRIO // Acanixz: Originalmente tinha mais hifens, porém não era compativel com a resolução
-    cout<<"----------------------------------------------------------------------------------------------------------------------";
-    cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-    cout<<"----------------------------------------------------------------------------------------------------------------------";
 
 
 
 
 
     while (true) { //esse laço faz o jogo rodar para sempre
-        system("cls"); // Acanixz: Tela é limpa a cada frame novo, até o momento, ninguém morreu de epilepsia assim
+        system("cls"); // [Acanixz] Tela é limpa a cada frame novo, até o momento, ninguém morreu de epilepsia assim
+        debugVar = bird_y;
+        ///DESENHO DO CENÁRIO // [Acanixz] Originalmente tinha mais hifens, porém não era compativel com a resolução
+        cout<<"----------------------------------------------------------------------------------------------------------------------";
+        cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+        cout<<"---------------------- DEBUG: " << debugVar << " --------- SCORE: " << score << " --------------------------------------------------------------------";
+
         ///POSICIONA O PÁSSARO
         coord.X = bird_x;    coord.Y = bird_y;
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
