@@ -23,6 +23,7 @@ using namespace std;
 int main()
 {
     int retryGame = 0;
+    int bestScore = 0;
     while (retryGame == 0 || retryGame == 1){
         ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, A SEGUIR.
         //INICIO: COMANDOS PARA QUE O CURSOR NÃO FIQUE PISCANDO NA TELA
@@ -42,6 +43,7 @@ int main()
         /// VARIAVEIS DEBUG ABAIXO, REMOVER EM VERSÃO FINAL ///
         int debugVar = -1;
         /// FIM DAS VARIAVEIS DEBUG ///
+
         int score = 0;
         bool isDead = false;
         int bird_x=5, bird_y=10; // [Acanixz] Posição Y começa de cima e vai para baixo
@@ -107,8 +109,15 @@ int main()
                 isDead = true;
             }
 
-            if (bird_x == obstaculo_x && (bird_y < obstaculo_y_min || bird_y > obstaculo_y_max)){
-                isDead = true;
+            if (bird_x == obstaculo_x){
+                    if (bird_y < obstaculo_y_min || bird_y > obstaculo_y_max){
+                        isDead = true;
+                    }
+                    else
+                    {
+                        cout << "\a" << endl;
+                        score++;
+                    }
             }
 
             if (isDead == true){
@@ -120,11 +129,15 @@ int main()
 
         }
         do {
+            if (score > bestScore) {
+                bestScore = score;
+            }
+
             system("cls");
             cout<<"-------------------------------------------------------------------------------------------------------------------";
-            cout<<"\n\n\n\n\n\n\n\n\n\t\t\t\t\t\tGAME OVER!";
+            cout<<"\n\n\n\n\n\n\n\n\n\t\t\t\t\t\tGAME OVER!" << "\n\t\t\t\t\t\tScore: " << score << "\n\t\t\t\t\t\tBest: " << bestScore;
             Sleep(1500);
-            cout<<"\n\n\n\n\n\n\n\n\n\t\t\t\t\t\tTry Again?\n\t\t\t\t\t    1 - Yes\t2 - No\n";
+            cout<<"\n\n\n\n\n\n\n\t\t\t\t\t\tTry Again?\n\t\t\t\t\t    1 - Yes\t2 - No\n";
             cout<<"-------------------------------------------------------------------------------------------------------------------\n\n\t\t\t\t\t\t     ";
             cin >> retryGame;
         } while (retryGame != 1 && retryGame != 2);
