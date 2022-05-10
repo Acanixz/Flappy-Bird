@@ -35,7 +35,7 @@ int main()
         //INÍCIO: COMANDOS PARA REPOSICIONAR O CURSOR NO INÍCIO DA TELA
         ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, ACIMA.
         COORD coord;
-        int obstaculo_y_min = 5, obstaculo_y_max = 7;
+        int obstaculo_y_min = 3, obstaculo_y_max = 9;
         //FIM: COMANDOS PARA REPOSICIONAR O CURSOR NO INÍCIO DA TELA
         ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, ACIMA.
 
@@ -60,11 +60,6 @@ int main()
             cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
             cout<<"---------------------- DEBUG: " << debugVar << " --------- SCORE: " << score << " -----------------------------------------------------------------";
 
-            ///POSICIONA O PÁSSARO
-            coord.X = bird_x;    coord.Y = bird_y;
-            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-            cout<<char(190);
-
             ///POSICIONA O OBSTÁCULO
 
             obstaculo_y=1;
@@ -79,6 +74,11 @@ int main()
 
                 obstaculo_y++;
             }
+
+            ///POSICIONA O PÁSSARO
+            coord.X = bird_x;    coord.Y = bird_y;
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+            cout<<char(190);
 
             ///VERIFICA COMANDO DO JOGADOR
             if (kbhit()) { ///verifica se uma tecla foi pressionada
@@ -107,8 +107,8 @@ int main()
                 isDead = true;
             }
 
-            if (bird_x == obstaculo_x){
-
+            if (bird_x == obstaculo_x && (bird_y < obstaculo_y_min || bird_y > obstaculo_y_max)){
+                isDead = true;
             }
 
             if (isDead == true){
