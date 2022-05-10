@@ -53,7 +53,7 @@ int main()
         bool isDead = false;
         int bird_x=5, bird_y=10; // [Acanixz] Posição Y começa de cima e vai para baixo
         int bird_y_anterior = 9;
-        int obstaculo_1x=100, obstaculo_1y; // [Acanixz] Originalmente o obstaculo_1x era 129
+        int obstaculo_1x=30, obstaculo_1y; // [Acanixz] Originalmente o obstaculo_1x era 129
         int obstaculo_1x_anterior = 0;
         int tecla;
 
@@ -129,7 +129,7 @@ int main()
 
             if (obstaculo_1x <= 0){
                 obstaculo_1x_anterior = 1;
-                obstaculo_1x = 100;
+                obstaculo_1x = 30;
             }
 
             ///VERIFICA COLISÃO
@@ -159,7 +159,7 @@ int main()
             ///TEMPO DE ESPERA
             if (speedCapped == false) {
                 runtimeSpeed = 300 - (100 * speed);
-                if (runtimeSpeed < 0){
+                if (runtimeSpeed <= 0){
                     runtimeSpeed = 100;
                     speedCapped = true;
                 }
