@@ -42,6 +42,12 @@ int main()
         COORD coord;
         int obstaculo_1y_min = rand() % 15 + 1;
         int obstaculo_1y_max = obstaculo_1y_min + 3 + (rand() % 6);
+
+        int obstaculo_2y_min = rand() % 15 + 1;
+        int obstaculo_2y_max = obstaculo_2y_min + 3 + (rand() % 6);
+
+        int obstaculo_3y_min = rand() % 15 + 1;
+        int obstaculo_3y_max = obstaculo_3y_min + 3 + (rand() % 6);
         //FIM: COMANDOS PARA REPOSICIONAR O CURSOR NO INÍCIO DA TELA
         ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, ACIMA.
 
@@ -58,8 +64,16 @@ int main()
         int bird_x=5, bird_y=10; // Posição Y começa de cima e vai para baixo
         int bird_y_anterior = 9;
         int spawn_obstaculos = 80;
-        int obstaculo_1x= spawn_obstaculos, obstaculo_1y;
+
+        int obstaculo_1x= spawn_obstaculos - 60, obstaculo_1y;
         int obstaculo_1x_anterior = 0;
+
+        int obstaculo_2x= spawn_obstaculos - 30, obstaculo_2y;
+        int obstaculo_2x_anterior = 0;
+
+        int obstaculo_3x= spawn_obstaculos, obstaculo_3y;
+        int obstaculo_3x_anterior = 0;
+
         int tecla;
 
         ///DESENHO DO CENÁRIO
@@ -71,7 +85,7 @@ int main()
 
         while (true) { //esse laço faz o jogo rodar para sempre
             debugVar = obstaculo_1y_min;
-            ///POSICIONA O OBSTÁCULO
+            ///POSICIONA O OBSTÁCULO 1
             obstaculo_1y=1;
             while(obstaculo_1y<20){
                 coord.X = obstaculo_1x;    coord.Y = obstaculo_1y;
@@ -84,13 +98,57 @@ int main()
 
                 obstaculo_1y++;
             }
-            ///REMOVE TRAÇO ANTERIOR
+            ///REMOVE TRAÇO ANTERIOR 1
             obstaculo_1y=1;
             while(obstaculo_1y<20){
                 coord.X = obstaculo_1x_anterior;    coord.Y = obstaculo_1y;
                 SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
                 cout<<" ";
                 obstaculo_1y++;
+            }
+
+            ///POSICIONA O OBSTÁCULO 2
+            obstaculo_2y=1;
+            while(obstaculo_2y<20){
+                coord.X = obstaculo_2x;    coord.Y = obstaculo_2y;
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+                if(obstaculo_2y< obstaculo_2y_min || obstaculo_2y> obstaculo_2y_max){
+                    cout<<char(219);
+                } else {
+                    cout<<" ";
+                }
+
+                obstaculo_2y++;
+            }
+            ///REMOVE TRAÇO ANTERIOR 2
+            obstaculo_2y=1;
+            while(obstaculo_2y<20){
+                coord.X = obstaculo_2x_anterior;    coord.Y = obstaculo_2y;
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+                cout<<" ";
+                obstaculo_2y++;
+            }
+
+            ///POSICIONA O OBSTÁCULO 3
+            obstaculo_3y=1;
+            while(obstaculo_3y<20){
+                coord.X = obstaculo_3x;    coord.Y = obstaculo_3y;
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+                if(obstaculo_3y< obstaculo_3y_min || obstaculo_3y> obstaculo_3y_max){
+                    cout<<char(219);
+                } else {
+                    cout<<" ";
+                }
+
+                obstaculo_3y++;
+            }
+            ///REMOVE TRAÇO ANTERIOR 3
+            obstaculo_3y=1;
+            while(obstaculo_3y<20){
+                coord.X = obstaculo_3x_anterior;    coord.Y = obstaculo_3y;
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+                cout<<" ";
+                obstaculo_3y++;
             }
 
             ///POSICIONA O PÁSSARO
@@ -128,7 +186,7 @@ int main()
 
             ///PÁSSARO CAI 1 POSIÇÃO SE NÃO FOI PRESSIONADO PARA SUBIR
 
-            ///OBSTÁCULO AVANÇA UMA POSIÇÃO PARA ESQUERDA
+            ///OBSTÁCULO 1 AVANÇA UMA POSIÇÃO PARA ESQUERDA
             obstaculo_1x_anterior = obstaculo_1x;
             obstaculo_1x--;
 
@@ -139,6 +197,28 @@ int main()
                 obstaculo_1y_max = obstaculo_1y_min + 3 + (rand() % 6);
             }
 
+            ///OBSTÁCULO 2 AVANÇA UMA POSIÇÃO PARA ESQUERDA
+            obstaculo_2x_anterior = obstaculo_2x;
+            obstaculo_2x--;
+
+            if (obstaculo_2x <= 0){
+                obstaculo_2x_anterior = 1;
+                obstaculo_2x = spawn_obstaculos;
+                obstaculo_2y_min = rand() % 15 + 1;
+                obstaculo_2y_max = obstaculo_2y_min + 3 + (rand() % 6);
+            }
+
+            ///OBSTÁCULO 3 AVANÇA UMA POSIÇÃO PARA ESQUERDA
+            obstaculo_3x_anterior = obstaculo_3x;
+            obstaculo_3x--;
+
+            if (obstaculo_3x <= 0){
+                obstaculo_3x_anterior = 1;
+                obstaculo_3x = spawn_obstaculos;
+                obstaculo_3y_min = rand() % 15 + 1;
+                obstaculo_3y_max = obstaculo_3y_min + 3 + (rand() % 6);
+            }
+
             ///VERIFICA COLISÃO
 
             if (bird_y >= 20 || bird_y <= 0){
@@ -147,6 +227,36 @@ int main()
 
             if (bird_x == obstaculo_1x){
                     if (bird_y < obstaculo_1y_min || bird_y > obstaculo_1y_max){
+                        isDead = true;
+                    }
+                    else
+                    {
+                        score++;
+                        if (score >= nextSpeedIncrement){
+                            nextSpeedIncrement = score + 5;
+                            speed++;
+                            cout << "\a" << endl;
+                        }
+                    }
+            }
+
+            if (bird_x == obstaculo_2x){
+                    if (bird_y < obstaculo_2y_min || bird_y > obstaculo_2y_max){
+                        isDead = true;
+                    }
+                    else
+                    {
+                        score++;
+                        if (score >= nextSpeedIncrement){
+                            nextSpeedIncrement = score + 5;
+                            speed++;
+                            cout << "\a" << endl;
+                        }
+                    }
+            }
+
+            if (bird_x == obstaculo_3x){
+                    if (bird_y < obstaculo_3y_min || bird_y > obstaculo_3y_max){
                         isDead = true;
                     }
                     else
