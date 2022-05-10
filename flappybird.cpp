@@ -2,6 +2,8 @@
 #include <iostream>
 #include <windows.h>
 #include <conio.h> ///para o getch()
+#include <time.h>
+#include <stdlib.h>
 ///https://stackoverflow.com/questions/34474627/linux-equivalent-for-conio-h-getch
 
 using namespace std;
@@ -22,6 +24,7 @@ using namespace std;
 
 int main()
 {
+    srand(time(NULL));
     int retryGame = 0;
     int bestScore = 0;
     while (retryGame == 0 || retryGame == 1){
@@ -37,7 +40,8 @@ int main()
         //INÍCIO: COMANDOS PARA REPOSICIONAR O CURSOR NO INÍCIO DA TELA
         ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, ACIMA.
         COORD coord;
-        int obstaculo_1y_min = 3, obstaculo_1y_max = 9;
+        int obstaculo_1y_min = rand() % 15 + 1;
+        int obstaculo_1y_max = obstaculo_1y_min + 3 + (rand() % 6);
         //FIM: COMANDOS PARA REPOSICIONAR O CURSOR NO INÍCIO DA TELA
         ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, ACIMA.
 
@@ -53,7 +57,8 @@ int main()
         bool isDead = false;
         int bird_x=5, bird_y=10; // [Acanixz] Posição Y começa de cima e vai para baixo
         int bird_y_anterior = 9;
-        int obstaculo_1x=30, obstaculo_1y; // [Acanixz] Originalmente o obstaculo_1x era 129
+        int spawn_obstaculos = 80;
+        int obstaculo_1x= spawn_obstaculos, obstaculo_1y; // [Acanixz] Originalmente o obstaculo_1x era 129
         int obstaculo_1x_anterior = 0;
         int tecla;
 
@@ -65,8 +70,7 @@ int main()
 
 
         while (true) { //esse laço faz o jogo rodar para sempre
-            debugVar = runtimeSpeed;
-
+            debugVar = obstaculo_1y_min;
             ///POSICIONA O OBSTÁCULO
             obstaculo_1y=1;
             while(obstaculo_1y<20){
@@ -129,7 +133,9 @@ int main()
 
             if (obstaculo_1x <= 0){
                 obstaculo_1x_anterior = 1;
-                obstaculo_1x = 30;
+                obstaculo_1x = spawn_obstaculos;
+                obstaculo_1y_min = rand() % 15 + 1;
+                obstaculo_1y_max = obstaculo_1y_min + 3 + (rand() % 6);
             }
 
             ///VERIFICA COLISÃO
