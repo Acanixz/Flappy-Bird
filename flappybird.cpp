@@ -45,9 +45,13 @@ int main()
         /// FIM DAS VARIAVEIS DEBUG ///
 
         int score = 0;
+        int runtimeSpeed = 300;
+        int speed = 0;
+        int nextSpeedIncrement = score + 5;
+        bool speedCapped = false;
         bool isDead = false;
         int bird_x=5, bird_y=10; // [Acanixz] Posição Y começa de cima e vai para baixo
-        int obstaculo_x=100, obstaculo_y; // [Acanixz] Originalmente o obstaculo_x era 129
+        int obstaculo_x=20, obstaculo_y; // [Acanixz] Originalmente o obstaculo_x era 129
         int tecla;
 
 
@@ -56,7 +60,7 @@ int main()
 
         while (true) { //esse laço faz o jogo rodar para sempre
             system("cls"); // [Acanixz] Tela é limpa a cada frame novo, até o momento, ninguém morreu de epilepsia assim
-            debugVar = obstaculo_x;
+            debugVar = runtimeSpeed;
             ///DESENHO DO CENÁRIO // [Acanixz] Originalmente tinha mais hifens, porém não era compativel com a resolução
             cout<<"-------------------------------------------------------------------------------------------------------------------";
             cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
@@ -100,7 +104,7 @@ int main()
             obstaculo_x--;
 
             if (obstaculo_x <= 0){
-                obstaculo_x = 100;
+                obstaculo_x = 20;
             }
 
             ///VERIFICA COLISÃO
@@ -115,8 +119,12 @@ int main()
                     }
                     else
                     {
-                        cout << "\a" << endl;
                         score++;
+                        if (score >= nextSpeedIncrement){
+                            nextSpeedIncrement = score + 5;
+                            speed++;
+                            cout << "\a" << endl;
+                        }
                     }
             }
 
@@ -124,7 +132,16 @@ int main()
                 break;
             }
             ///TEMPO DE ESPERA
-            Sleep(300);
+            if (speedCapped == false) {
+                runtimeSpeed = 300 - (100 * speed);
+                if (runtimeSpeed < 0){
+                    runtimeSpeed = 100;
+                    speedCapped = true;
+                }
+            } else{
+                runtimeSpeed = 50;
+            }
+            Sleep(runtimeSpeed);
 
 
         }
