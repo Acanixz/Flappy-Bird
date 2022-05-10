@@ -116,6 +116,7 @@ int main()
             if (kbhit()) { ///verifica se uma tecla foi pressionada
                 tecla=getch(); //verifica comando do jogador
             }
+            while(kbhit()) getch();
 
             bird_y_anterior = bird_y;
             if ( tecla=='w' || tecla=='W' ){
@@ -185,6 +186,7 @@ int main()
             cout<<"-------------------------------------------------------------------------------------------------------------------";
             cout<<"\n\n\n\n\n\n\n\n\n\t\t\t\t\t\tGAME OVER!" << "\n\t\t\t\t\t\tScore: " << score << "\n\t\t\t\t\t\tBest: " << bestScore;
             Sleep(1500);
+            while(kbhit()) getch();
             cout<<"\n\n\n\n\n\n\n\t\t\t\t\t\tTry Again?\n\t\t\t\t\t    1 - Yes\t2 - No\n";
             cout<<"-------------------------------------------------------------------------------------------------------------------\n\n\t\t\t\t\t\t     ";
             cin >> retryGame;
