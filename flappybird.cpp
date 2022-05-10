@@ -60,10 +60,11 @@ int main()
         int speed = 0;
         int nextSpeedIncrement = score + 5;
         bool speedCapped = false;
+        int gravityAffector = 0;
         bool isDead = false;
         int bird_x=5, bird_y=10; // Posição Y começa de cima e vai para baixo
         int bird_y_anterior = 9;
-        int spawn_obstaculos = 80;
+        int spawn_obstaculos = 90;
 
         int obstaculo_1x= spawn_obstaculos - 60, obstaculo_1y;
         int obstaculo_1x_anterior = 0;
@@ -156,9 +157,11 @@ int main()
             SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
             cout<<char(190);
             ///REMOVE TRAÇO ANTERIOR
-            coord.X = bird_x;    coord.Y = bird_y_anterior;
-            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-            cout<<" ";
+            if (bird_y_anterior != bird_y) {
+                coord.X = bird_x;    coord.Y = bird_y_anterior;
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+                cout<<" ";
+            }
 
             ///DESENHA O SCORE
             coord.X = 30;    coord.Y = 20;
@@ -181,7 +184,12 @@ int main()
                 bird_y--;
                 tecla='0';
             } else {
-                bird_y++;
+                if (speedCapped == false || gravityAffector == 1){
+                    bird_y++;
+                    gravityAffector = 0;
+                } else {
+                    gravityAffector = 1;
+                }
             }
 
             ///PÁSSARO CAI 1 POSIÇÃO SE NÃO FOI PRESSIONADO PARA SUBIR
@@ -275,13 +283,13 @@ int main()
             }
             ///TEMPO DE ESPERA
             if (speedCapped == false) {
-                runtimeSpeed = 300 - (100 * speed);
+                runtimeSpeed = 300 - (50 * speed);
                 if (runtimeSpeed <= 0){
-                    runtimeSpeed = 100;
+                    runtimeSpeed = 50;
                     speedCapped = true;
                 }
             } else{
-                runtimeSpeed = 100;
+                runtimeSpeed = 50;
             }
             Sleep(runtimeSpeed);
 
