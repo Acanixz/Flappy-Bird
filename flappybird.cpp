@@ -12,12 +12,12 @@ using namespace std;
 /**
     F L A P B I R D (M2 Algoritmos)
     - Lembrando: não permitido o uso de funções e variáveis compostas como structs, vetores e matrizes
-    - Corrigir os rastros (pássaro e obstáculos)
-    - Implementar colisão
-    - Implementar pontuação (mais um ponto para cada obstáculo superado)
-    - Fazer 2 obstáculos simultâneos (obstaculo1 e obstaculo2)
-    - Deixar a pontuação visível durante todo o jogo
-    - Definir marcos para acelerar a velocidade
+    - Corrigir os rastros (pássaro e obstáculos) [FEITO]
+    - Implementar colisão [FEITO]
+    - Implementar pontuação (mais um ponto para cada obstáculo superado) [FEITO]
+    - Fazer 2 obstáculos simultâneos (obstaculo1 e obstaculo2) [A FAZER]
+    - Deixar a pontuação visível durante todo o jogo [FEITO]
+    - Definir marcos para acelerar a velocidade [FEITO]
 */
 
 
@@ -55,14 +55,14 @@ int main()
         int nextSpeedIncrement = score + 5;
         bool speedCapped = false;
         bool isDead = false;
-        int bird_x=5, bird_y=10; // [Acanixz] Posição Y começa de cima e vai para baixo
+        int bird_x=5, bird_y=10; // Posição Y começa de cima e vai para baixo
         int bird_y_anterior = 9;
         int spawn_obstaculos = 80;
-        int obstaculo_1x= spawn_obstaculos, obstaculo_1y; // [Acanixz] Originalmente o obstaculo_1x era 129
+        int obstaculo_1x= spawn_obstaculos, obstaculo_1y;
         int obstaculo_1x_anterior = 0;
         int tecla;
 
-        ///DESENHO DO CENÁRIO // [Acanixz] Originalmente tinha mais hifens, porém não era compativel com a resolução
+        ///DESENHO DO CENÁRIO
         cout<<"-------------------------------------------------------------------------------------------------------------------";
         cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
         cout<<"-------------------------------------------------------------------------------------------------------------------";
