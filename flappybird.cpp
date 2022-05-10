@@ -35,6 +35,7 @@ int main()
         //INÍCIO: COMANDOS PARA REPOSICIONAR O CURSOR NO INÍCIO DA TELA
         ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, ACIMA.
         COORD coord;
+        int obstaculo_y_min = 5, obstaculo_y_max = 7;
         //FIM: COMANDOS PARA REPOSICIONAR O CURSOR NO INÍCIO DA TELA
         ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, ACIMA.
 
@@ -53,7 +54,7 @@ int main()
 
         while (true) { //esse laço faz o jogo rodar para sempre
             system("cls"); // [Acanixz] Tela é limpa a cada frame novo, até o momento, ninguém morreu de epilepsia assim
-            debugVar = isDead;
+            debugVar = obstaculo_x;
             ///DESENHO DO CENÁRIO // [Acanixz] Originalmente tinha mais hifens, porém não era compativel com a resolução
             cout<<"-------------------------------------------------------------------------------------------------------------------";
             cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
@@ -70,7 +71,7 @@ int main()
             while(obstaculo_y<20){
                 coord.X = obstaculo_x;    coord.Y = obstaculo_y;
                 SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-                if(obstaculo_y<5 || obstaculo_y>7){
+                if(obstaculo_y< obstaculo_y_min || obstaculo_y> obstaculo_y_max){
                     cout<<char(219);
                 } else {
                     cout<<" ";
@@ -96,10 +97,18 @@ int main()
             ///OBSTÁCULO AVANÇA UMA POSIÇÃO PARA ESQUERDA
             obstaculo_x--;
 
+            if (obstaculo_x <= 0){
+                obstaculo_x = 100;
+            }
+
             ///VERIFICA COLISÃO
 
             if (bird_y >= 20 || bird_y <= 0){
                 isDead = true;
+            }
+
+            if (bird_x == obstaculo_x){
+
             }
 
             if (isDead == true){
