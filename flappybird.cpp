@@ -25,6 +25,7 @@ int main()
     int retryGame = 0;
     int bestScore = 0;
     while (retryGame == 0 || retryGame == 1){
+        system("cls");
         ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, A SEGUIR.
         //INICIO: COMANDOS PARA QUE O CURSOR NÃO FIQUE PISCANDO NA TELA
         HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -36,7 +37,7 @@ int main()
         //INÍCIO: COMANDOS PARA REPOSICIONAR O CURSOR NO INÍCIO DA TELA
         ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, ACIMA.
         COORD coord;
-        int obstaculo_y_min = 3, obstaculo_y_max = 9;
+        int obstaculo_1y_min = 3, obstaculo_1y_max = 9;
         //FIM: COMANDOS PARA REPOSICIONAR O CURSOR NO INÍCIO DA TELA
         ///ALERTA: NÃO MODIFICAR O TRECHO DE CÓDIGO, ACIMA.
 
@@ -51,46 +52,68 @@ int main()
         bool speedCapped = false;
         bool isDead = false;
         int bird_x=5, bird_y=10; // [Acanixz] Posição Y começa de cima e vai para baixo
-        int obstaculo_x=100, obstaculo_y; // [Acanixz] Originalmente o obstaculo_x era 129
+        int bird_y_anterior = 9;
+        int obstaculo_1x=100, obstaculo_1y; // [Acanixz] Originalmente o obstaculo_1x era 129
+        int obstaculo_1x_anterior = 0;
         int tecla;
 
-
+        ///DESENHO DO CENÁRIO // [Acanixz] Originalmente tinha mais hifens, porém não era compativel com a resolução
+        cout<<"-------------------------------------------------------------------------------------------------------------------";
+        cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+        cout<<"-------------------------------------------------------------------------------------------------------------------";
 
 
 
         while (true) { //esse laço faz o jogo rodar para sempre
-            system("cls"); // [Acanixz] Tela é limpa a cada frame novo, até o momento, ninguém morreu de epilepsia assim
             debugVar = runtimeSpeed;
-            ///DESENHO DO CENÁRIO // [Acanixz] Originalmente tinha mais hifens, porém não era compativel com a resolução
-            cout<<"-------------------------------------------------------------------------------------------------------------------";
-            cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-            cout<<"---------------------- DEBUG: " << debugVar << " --------- SCORE: " << score << " -----------------------------------------------------------------";
 
             ///POSICIONA O OBSTÁCULO
-
-            obstaculo_y=1;
-            while(obstaculo_y<20){
-                coord.X = obstaculo_x;    coord.Y = obstaculo_y;
+            obstaculo_1y=1;
+            while(obstaculo_1y<20){
+                coord.X = obstaculo_1x;    coord.Y = obstaculo_1y;
                 SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-                if(obstaculo_y< obstaculo_y_min || obstaculo_y> obstaculo_y_max){
+                if(obstaculo_1y< obstaculo_1y_min || obstaculo_1y> obstaculo_1y_max){
                     cout<<char(219);
                 } else {
                     cout<<" ";
                 }
 
-                obstaculo_y++;
+                obstaculo_1y++;
+            }
+            ///REMOVE TRAÇO ANTERIOR
+            obstaculo_1y=1;
+            while(obstaculo_1y<20){
+                coord.X = obstaculo_1x_anterior;    coord.Y = obstaculo_1y;
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+                cout<<" ";
+                obstaculo_1y++;
             }
 
             ///POSICIONA O PÁSSARO
             coord.X = bird_x;    coord.Y = bird_y;
             SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
             cout<<char(190);
+            ///REMOVE TRAÇO ANTERIOR
+            coord.X = bird_x;    coord.Y = bird_y_anterior;
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+            cout<<" ";
+
+            ///DESENHA O SCORE
+            coord.X = 30;    coord.Y = 20;
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+            cout<<"SCORE: " << score;
+
+            ///DESENHA O DEBUG
+            coord.X = 50;    coord.Y = 20;
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+            cout<<"DEBUG: " << debugVar;
 
             ///VERIFICA COMANDO DO JOGADOR
             if (kbhit()) { ///verifica se uma tecla foi pressionada
                 tecla=getch(); //verifica comando do jogador
             }
 
+            bird_y_anterior = bird_y;
             if ( tecla=='w' || tecla=='W' ){
                 bird_y--;
                 tecla='0';
@@ -101,10 +124,12 @@ int main()
             ///PÁSSARO CAI 1 POSIÇÃO SE NÃO FOI PRESSIONADO PARA SUBIR
 
             ///OBSTÁCULO AVANÇA UMA POSIÇÃO PARA ESQUERDA
-            obstaculo_x--;
+            obstaculo_1x_anterior = obstaculo_1x;
+            obstaculo_1x--;
 
-            if (obstaculo_x <= 0){
-                obstaculo_x = 100;
+            if (obstaculo_1x <= 0){
+                obstaculo_1x_anterior = 1;
+                obstaculo_1x = 100;
             }
 
             ///VERIFICA COLISÃO
@@ -113,8 +138,8 @@ int main()
                 isDead = true;
             }
 
-            if (bird_x == obstaculo_x){
-                    if (bird_y < obstaculo_y_min || bird_y > obstaculo_y_max){
+            if (bird_x == obstaculo_1x){
+                    if (bird_y < obstaculo_1y_min || bird_y > obstaculo_1y_max){
                         isDead = true;
                     }
                     else
