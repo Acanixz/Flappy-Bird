@@ -4,7 +4,7 @@
 - Hérick Vitor Vieira Bittencourt
 - Vinicius Henrique Ribeiro
 - João Eduardo Gomes Müller
-- ????????
+- Nicolas Henrique da Graça
 */
 
 #include <iostream>
@@ -88,9 +88,9 @@ int main()
             SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
             cout<<"3 - Dificil";
 
-            coord.X = 15;    coord.Y = 19;
+            coord.X = 25;    coord.Y = 19;
             SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-            cout<<"Vinicius Ribeiro, Joao Eduardo, Herick Bittencourt e outro cara que ainda n sei o nome";
+            cout<<"Vinicius Ribeiro, Joao Eduardo, Herick Bittencourt e Nicolas Graca";
 
             coord.X = 55;    coord.Y = 20;
             SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
@@ -219,9 +219,7 @@ int main()
         cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
         cout<<"-------------------------------------------------------------------------------------------------------------------";
 
-
-
-        while (true) {
+        while (isDead == false) {
             ///POSICIONA OBSTÁCULO 1
             obstaculo_1y=1;
             while(obstaculo_1y<20){
@@ -323,7 +321,7 @@ int main()
                 tecla='0';
             } else { /// W não pressionado
                 if (CHEAT_Fly == false) { /// Gravidade ativada
-                    if (speedCapped == false || gravityAffector == 1){
+                    if (speedCapped == false || (speedCapped == true && gravityAffector == 1)){
                         bird_y++;
                         gravityAffector = 0;
                     } else {
@@ -334,8 +332,9 @@ int main()
                     tecla='0';
                 }
             }
-
-            ///PÁSSARO CAI 1 POSIÇÃO SE NÃO FOI PRESSIONADO PARA SUBIR
+            /**ACIMA: PÁSSARO CAI 1 POSIÇÃO SE NÃO FOI PRESSIONADO PARA SUBIR (Cheat desligado)
+            PÁSSARO CAI 1 POSIÇÃO SE APERTOU *S* (Cheat ligado)
+            */
 
             ///OBSTÁCULO 1 AVANÇA UMA POSIÇÃO PARA ESQUERDA
             obstaculo_1x_anterior = obstaculo_1x;
@@ -427,17 +426,13 @@ int main()
                     }
             }
 
-            /// ENCERRAR JOGO CASO MORTO
-            if (isDead == true){
-                break;
-            }
             ///TEMPO DE ESPERA
             if (speedCapped == false) {
                 runtimeSpeed = 300 - (50 * speed);
                 if (CHEAT_Speed) {
                     runtimeSpeed = 300 - (100 * speed);
                 }
-                if (runtimeSpeed <= 0){ /// Limite de velocidade
+                if (runtimeSpeed <= 50){ /// Limite de velocidade
                     runtimeSpeed = 50;
                     speedCapped = true;
                 }
@@ -503,13 +498,9 @@ int main()
 
             cin >> retryGame;
 
-            if (retryGame == 3) { /// VOLTAR AO MENU, APAGAR CHEATS E DIFICULDADE
+            if (retryGame == 3) { /// VOLTAR AO MENU
                 retryGame = 1;
-                difficultySelected = 0;
-                CHEAT_Fly = false;
-                CHEAT_SuperEasy = false;
-                CHEAT_Speed = false;
-                CheatsEnabled = false;
+                difficultySelected = -1;
             }
         } while (retryGame != 1 && retryGame != 2); ///
         /// SALVAR RECORDE
@@ -517,6 +508,14 @@ int main()
                 bestScore = score; /// TRAPAÇAS NÃO SALVAM
         }
         beatBestScore = false; /// COMPORTAMENTO DE RECORDE TERMINOU
+
+        if (difficultySelected == -1){ /// DESATIVAR CHEATS APÓS VERIFICAÇÃO E RESETAR DIFICULDADE
+            CHEAT_Fly = false;
+            CHEAT_SuperEasy = false;
+            CHEAT_Speed = false;
+            CheatsEnabled = false;
+            difficultySelected = 0;
+        }
     }
     return 0;
 }
